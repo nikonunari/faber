@@ -1,0 +1,197 @@
+
+Organizations:
+    - &OrdererOrg
+        Name: Orderer
+        ID: OrdererMSP
+        MSPDir: /root/opt/crypto-config/ordererOrganizations/orderer.test.com/msp
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('OrdererMSP.member')"
+            Writers:
+                Type: Signature
+                Rule: "OR('OrdererMSP.member')"
+            Admins:
+                Type: Signature
+                Rule: "OR('OrdererMSP.admin')"
+        OrdererEndpoints:
+            - orderer0.orderer.test.com:7050
+            - orderer1.orderer.test.com:8050
+            - orderer2.orderer.test.com:9050
+    - &Org0
+        Name: Org0
+        ID: Org0MSP
+        MSPDir: /root/opt/crypto-config/peerOrganizations/org0.test.com/msp
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('Org0MSP.member')"
+            Writers:
+                Type: Signature
+                Rule: "OR('Org0MSP.member')"
+            Admins:
+                Type: Signature
+                Rule: "OR('Org0MSP.admin')"
+            Endorsement:
+                Type: Signature
+                Rule: "OR('Org0MSP.member')"
+        AnchorPeers:
+            -   Host: peer0.org0.test.com
+                Port: 8051
+    - &Org1
+        Name: Org1
+        ID: Org1MSP
+        MSPDir: /root/opt/crypto-config/peerOrganizations/org1.test.com/msp
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('Org1MSP.member')"
+            Writers:
+                Type: Signature
+                Rule: "OR('Org1MSP.member')"
+            Admins:
+                Type: Signature
+                Rule: "OR('Org1MSP.admin')"
+            Endorsement:
+                Type: Signature
+                Rule: "OR('Org1MSP.member')"
+        AnchorPeers:
+            - Host: peer0.org1.test.com
+              Port: 11051
+    - &Org2
+        Name: Org2
+        ID: Org2MSP
+        MSPDir: /root/opt/crypto-config/peerOrganizations/org2.test.com/msp
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('Org2MSP.member')"
+            Writers:
+                Type: Signature
+                Rule: "OR('Org2MSP.member')"
+            Admins:
+                Type: Signature
+                Rule: "OR('Org2MSP.admin')"
+            Endorsement:
+                Type: Signature
+                Rule: "OR('Org2MSP.member')"
+        AnchorPeers:
+            -   Host: peer0.org2.test.com
+                Port: 13051
+Capabilities:
+    Channel: &ChannelCapabilities
+        V2_0: true
+    Orderer: &OrdererCapabilities
+        V2_0: true
+    Application: &ApplicationCapabilities
+        V2_0: true
+
+Application: &ApplicationDefaults
+    Organizations:
+        - *Org1
+        - *Org0
+        - *Org2
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+        LifecycleEndorsement:
+            Type: Signature
+            Rule: "OR('Org1MSP.member','Org2MSP.member')"
+        Endorsement:
+            Type: Signature
+            Rule: "OR('Org1MSP.member','Org2MSP.member')"
+
+    Capabilities:
+        <<: *ApplicationCapabilities
+
+Orderer: &OrdererDefaults
+
+    OrdererType: solo
+    Addresses:
+        - 172.20.10.3:7050
+        - 172.20.10.3:8050
+        - 172.20.10.3:9050
+    EtcdRaft:
+        Consenters:
+            - Host: orderer0.orderer.test.com
+              Port: 7050
+              ClientTLSCert: /root/opt/crypto-config/ordererOrganizations/orderer.test.com/orderers/orderer0.orderer.test.com/tls/server.crt
+              ServerTLSCert: /root/opt/crypto-config/ordererOrganizations/orderer.test.com/orderers/orderer0.orderer.test.com/tls/server.crt
+            - Host: orderer1.orderer.test.com
+              Port: 8050
+              ClientTLSCert: /root/opt/crypto-config/ordererOrganizations/orderer.test.com/orderers/orderer1.orderer.test.com/tls/server.crt
+              ServerTLSCert: /root/opt/crypto-config/ordererOrganizations/orderer.test.com/orderers/orderer1.orderer.test.com/tls/server.crt
+            - Host: orderer2.orderer.test.com
+              Port: 9050
+              ClientTLSCert: /root/opt/crypto-config/ordererOrganizations/orderer.test.com/orderers/orderer2.orderer.test.com/tls/server.crt
+              ServerTLSCert: /root/opt/crypto-config/ordererOrganizations/orderer.test.com/orderers/orderer2.orderer.test.com/tls/server.crt
+    BatchTimeout: 2s
+    BatchSize:
+        MaxMessageCount: 10
+        AbsoluteMaxBytes: 99 MB
+        PreferredMaxBytes: 512 KB
+    Organizations:
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+        BlockValidation:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+
+Channel: &ChannelDefaults
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+    Capabilities:
+        <<: *ChannelCapabilities
+
+Profiles:
+
+    FabricDrawOrdererGenesis:
+        <<: *ChannelDefaults
+        Orderer:
+            <<: *OrdererDefaults
+            Organizations:
+                - *OrdererOrg
+            Capabilities:
+                <<: *OrdererCapabilities
+        Consortiums:
+            SampleConsortium:
+                Organizations:
+                    - *Org1
+                    - *Org0
+                    - *Org2
+
+    FabricDrawChannel:
+        Consortium: SampleConsortium
+        <<: *ChannelDefaults
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *Org1
+                - *Org2
+                - *Org0
+
+            Capabilities:
+                <<: *ApplicationCapabilities
