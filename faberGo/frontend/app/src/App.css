@@ -1,0 +1,153 @@
+/* App container styles, updated to fill the space left by the navbar and toolbar */
+.app {
+  display: flex;
+  margin-top: 65px;
+  /* Adjust height considering navbar height */
+  height: calc(100vh - 40px); 
+}
+
+/* Navbar styles */
+.navbar {
+  display: flex; /* 使用 Flexbox 布局 */
+  /* justify-content: space-around; */
+  align-items: center; /* 垂直居中对齐子元素 */
+  position: fixed; /* Fixed position to make it stay at the top */
+  left: 0; /* Align to the left side */
+  top: 0; /* Align to the top side */
+  width: 100%; /* Make it full width */
+  height: 60px;
+  background-color: #000; /* Black background */
+  color: white; /* White text color */
+  padding: 10px 10px; /* Padding around the content */
+  z-index: 1000; /* Ensure it's above other content */
+  box-shadow: 0 2px 4px rgba(0,0,0,.5); /* Optional: add shadow for depth */
+}
+
+
+
+/* Toolbar styles */
+.toolbar {
+  width: 200px; /* Adjust width as needed */
+  background-color: #ffffff; /* Light blue background */
+  color: black; /* Black text color for contrast */
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  /* justify-content: space-around; */
+  padding: 50px 10px 0px 10px;
+  overflow-y: auto; /* Scrollbar if needed */
+}
+
+/* Individual toolbar item styles */
+.toolbar div {
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #dff774; /* Slightly lighter than the toolbar for contrast */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.toolbarItem {
+  color: black;
+}
+
+/* Hover effect for toolbar items */
+.toolbar div:hover {
+  background-color: #9AC0CD; /* A darker shade of the toolbar color for hover effect */
+}
+
+/* Canvas styles */
+.canvas {
+  position: relative;
+  margin-top: 20px;
+  flex-grow: 1; /* Make canvas fill the available space */
+  height: calc(100vh - 60px); /* Adjust height considering navbar and padding */
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  background-color: #fafafa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+.actions {
+  margin-top: 20px;
+  display: flex; /* 使用flex布局 */
+  flex-direction: row; /* 在水平方向上排列 */
+  align-items: center;
+}
+
+.actions button {
+  margin-bottom: 10px; /* 添加下边距以分隔按钮 */
+}
+
+
+/* Button styles */
+button {
+  margin: 5px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: #60666d;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* Button hover effect */
+button:hover {
+  background-color: #0056b3;
+}
+
+#clearButton {
+  background-color: #60666d;
+  color: white; /* 可以根据需要调整文本颜色 */
+  /* 可以根据需要添加其他样式，例如边框、圆角等 */
+}
+
+.BlockchainNetwork {
+  border: 1px solid #555; /* 边框颜色 */
+  background-color: #deecf8; /* 背景颜色 */
+  border-radius: 100px; /* 圆角半径，根据需要调整 */
+  padding: 10px; /* 可选，增加内边距以美化样式 */
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2); /* 可选，添加阴影效果 */
+  width:  870px;
+  height: 840px;
+  opacity: 0.4;
+}
+
+
+.Peer {
+  width: 60px;
+  height: 60px;
+  background-color: #727272; /* 深灰色背景 */
+  display: flex;
+  align-items: center; /* 垂直居中 */
+  justify-content: center; /* 水平居中 */
+  color: white; /* 白色字体 */
+  font-weight: bold; /* 加粗字体 */
+}
+
+
+.Organization {
+  width: 200px;
+  height: 60px;
+  /* border-radius: 50%; 使用50%来创建圆形元素 */
+  background-color: green; /* 绿色背景 */
+  display: flex;
+  align-items: center; /* 垂直居中 */
+  justify-content: center; /* 水平居中 */
+  color: white; /* 白色字体 */
+}
+
+
+.Channel {
+  width: 600px; /* 设置元素宽度 */
+  height: 50px; /* 设置元素高度 */
+  border: 5px solid hsl(207, 57%, 43%); /* 设置边框，颜色为深蓝色 */
+  border-radius: 60%; /* 使用border-radius属性创建椭圆形 */
+}
+
